@@ -1,6 +1,9 @@
+from pathlib import Path 
+import os 
+
 from src.PlantVillage.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH 
 from src.PlantVillage.utils import read_yaml, create_directories 
-from src.PlantVillage.schemas import DataIngestionSchema
+from src.PlantVillage.schemas import DataIngestionSchema, PrepareBaseModelSchema, TrainingSchema
 
 class ConfigurationManager:
     def __init__(
@@ -26,4 +29,37 @@ class ConfigurationManager:
         )
         
         
+    def get_base_model_config(self) -> PrepareBaseModelSchema:
+        config = self.config.prepare_base_model 
+        params = self.params 
+        create_directories([config.root_dir])
         
+        return PrepareBaseModelSchema(
+            root_dir= config.root_dir,
+            base_model_path= config.base_model_path,
+            updated_base_model_path= config.updated_base_model_path,
+            params_image_size= params.IMAGE_SIZE,
+            params_learning_rate=params.LEARNING_RATE,
+            params_weights=params.WEIGHTS,
+            params_classes=params.CLASSES,
+            params_include_top=params.INCLUDE_TOP
+        )
+        
+        
+    def get_training_config(self) -> TrainingSchema:
+        training = self.config.training
+        prepare_base_model = self.config.prepare_base_model 
+        params = self.params 
+        training_data = Path(os.path.join(self.config.data_ingestion.local_path,"PlantVillage" ))
+        create_directories([training.root_dir])
+        
+        return TrainingSchema(
+            root_dir= training.root_dir, 
+            trained_model_path= training.trained_model_path, 
+            updated_base_model_path= prepare_base_model.updated_base_model_path, 
+            training_data_path= training_data, 
+            params_epochs=params.EPOCHS, 
+            params_batch_size=params.BATCH_SIZE, 
+            params_augmentation= params.AUGMENTATION, 
+            params_image_size= params.IMAGE_SIZE,
+        )
