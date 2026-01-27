@@ -15,3 +15,7 @@ prepare_base_model:
 training:
   root_dir: artifacts/training
   trained_model_path: artifacts/training/model.keras
+
+
+evaluation:
+  track_url: https://dagshub.com/youssefBedeer/End-to-End-PlantVillage.mlflow

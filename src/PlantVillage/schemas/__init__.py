@@ -30,3 +30,13 @@ class TrainingSchema:
     params_batch_size: int 
     params_augmentation: bool 
     params_image_size: list
+    
+    
+@dataclass 
+class EvaluationSchema:
+    track_url: str
+    model_path: Path
+    training_data: Path 
+    all_params: dict 
+    params_image_size: list 
+    params_batch_size: int 

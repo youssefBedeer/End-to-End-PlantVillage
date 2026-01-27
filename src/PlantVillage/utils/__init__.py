@@ -4,6 +4,7 @@ import os
 from box import ConfigBox 
 from pathlib import Path
 from src.PlantVillage import logger
+import json
 
 @ensure_annotations 
 def read_yaml(yaml_file_path: Path) -> ConfigBox:
@@ -26,3 +27,11 @@ def create_directories(list_of_dirs: list):
             logger.info(f"Directory created Successfully at: {path}")
         except Exception as e:
             raise ValueError(f"Error creating dir: [{path}] Error: {str(e)}")
+        
+        
+@ensure_annotations 
+def save_json(path: Path, data: dict):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=4)
+        
+    logger.info(f"json file saved at: {path}")

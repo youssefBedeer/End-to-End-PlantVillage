@@ -3,7 +3,7 @@ import os
 
 from src.PlantVillage.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH 
 from src.PlantVillage.utils import read_yaml, create_directories 
-from src.PlantVillage.schemas import DataIngestionSchema, PrepareBaseModelSchema, TrainingSchema
+from src.PlantVillage.schemas import DataIngestionSchema, PrepareBaseModelSchema, TrainingSchema, EvaluationSchema
 
 class ConfigurationManager:
     def __init__(
@@ -62,4 +62,19 @@ class ConfigurationManager:
             params_batch_size=params.BATCH_SIZE, 
             params_augmentation= params.AUGMENTATION, 
             params_image_size= params.IMAGE_SIZE,
+        )
+        
+
+        
+    def get_evaluation_config(self) -> EvaluationSchema:
+        training_data_path = Path(os.path.join(self.config.data_ingestion.local_path, "PlantVillage"))
+        
+        
+        return EvaluationSchema(
+            track_url= self.config.evaluation.track_url,
+            model_path= self.config.training.trained_model_path,
+            training_data= training_data_path,
+            all_params=  self.params,
+            params_image_size= self.params.IMAGE_SIZE,
+            params_batch_size= self.params.BATCH_SIZE,
         )
