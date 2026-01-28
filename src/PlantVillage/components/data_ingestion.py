@@ -22,13 +22,24 @@ class DataIngestion:
             os.environ["KAGGLEHUB_CACHE"] = self.config.local_path
             # start download
             path = kagglehub.dataset_download(data_url)
-            csv_path = os.path.join(path, os.listdir(path)[0])
+            first_entry = os.listdir(path)[0]
+            src_path = os.path.join(path, first_entry)
             
-            # copy csv to destination 
-            shutil.copy2(csv_path, self.config.local_path)
+            # copy downloaded content (file or directory) to destination
+            dest_path = self.config.local_path
+            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
             
-            # delete old folders and files
-            shutil.rmtree(Path("artifacts/data_ingestion/datasets"))
+            if os.path.isdir(src_path):
+                # if a folder (e.g. PlantVillage images), copy the whole tree
+                if os.path.exists(dest_path):
+                    shutil.rmtree(dest_path)
+                shutil.copytree(src_path, dest_path)
+            else:
+                # if a single file (e.g. CSV), copy it
+                shutil.copy2(src_path, dest_path)
+            
+            # delete old folders and files (best-effort)
+            shutil.rmtree(Path("artifacts/data_ingestion/datasets"), ignore_errors=True)
 
         except Exception as e:
-            raise ValueError(f"Invalid URL: must be user/dataset-name ERROR: {e}")
+            raise ValueError(f"Data ingestion failed. Please ensure source_url is 'user/dataset-name'. ERROR: {e}")
