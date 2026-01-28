@@ -33,7 +33,7 @@ jobs:
 
       - name: Run training pipeline
         run: |
-          dvc repro
+          dvc repro --force
 
       - name: Generate CML report
         run: |
