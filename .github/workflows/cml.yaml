@@ -33,7 +33,7 @@ jobs:
 
       - name: Run training pipeline
         run: |
-          python main.py
+          dvc repro
 
       - name: Generate CML report
         run: |
