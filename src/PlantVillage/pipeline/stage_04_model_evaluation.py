@@ -1,6 +1,6 @@
-from src.PlantVillage.config.configuration import ConfigurationManager
-from src.PlantVillage.components.model_evaluation import Evaluation
-from src.PlantVillage import logger
+from PlantVillage.config.configuration import ConfigurationManager
+from PlantVillage.components.model_evaluation import Evaluation
+from PlantVillage import logger
 
 
 STAGE_NAME = "Model Evaluation"

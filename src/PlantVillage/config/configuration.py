@@ -1,9 +1,9 @@
 from pathlib import Path 
 import os 
 
-from src.PlantVillage.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH 
-from src.PlantVillage.utils import read_yaml, create_directories 
-from src.PlantVillage.schemas import DataIngestionSchema, PrepareBaseModelSchema, TrainingSchema, EvaluationSchema
+from PlantVillage.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH 
+from PlantVillage.utils import read_yaml, create_directories 
+from PlantVillage.schemas import DataIngestionSchema, PrepareBaseModelSchema, TrainingSchema, EvaluationSchema
 
 class ConfigurationManager:
     def __init__(

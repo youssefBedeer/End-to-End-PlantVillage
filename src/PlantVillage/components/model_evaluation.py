@@ -1,8 +1,8 @@
 import tensorflow as tf
-from src.PlantVillage.utils import save_json
+from PlantVillage.utils import save_json
 import mlflow
 import dagshub
-from src.PlantVillage.schemas import EvaluationSchema
+from PlantVillage.schemas import EvaluationSchema
 from pathlib import Path
 
 class Evaluation:

@@ -1,5 +1,5 @@
 import tensorflow as tf 
-from src.PlantVillage.schemas import TrainingSchema
+from PlantVillage.schemas import TrainingSchema
 
 
 class Training:

@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  prepare_base_model:
+    cmd: set PYTHONPATH=%cd%\src && python 
+      src/PlantVillage/pipeline/stage_02_prepare_base_model.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a081cfe76b08900cc18d1506eeda676d
+      size: 611
+    - path: src/PlantVillage/pipeline/stage_02_prepare_base_model.py
+      hash: md5
+      md5: 09ac89742718b13abbf98ee14a31556d
+      size: 930
+    params:
+      params.yaml:
+        CLASSES: 15
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.01
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 57799e77b2c53fa74f50a34b7e973596.dir
+      size: 119377955
+      nfiles: 2

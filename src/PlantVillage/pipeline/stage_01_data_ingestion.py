@@ -1,6 +1,6 @@
-from src.PlantVillage.config.configuration import ConfigurationManager
-from src.PlantVillage.components.data_ingestion import DataIngestion
-from src.PlantVillage import logger
+from PlantVillage.config.configuration import ConfigurationManager
+from PlantVillage.components.data_ingestion import DataIngestion
+from PlantVillage import logger
 
 
 STAGE_NAME= "Data Ingestion Stage" 

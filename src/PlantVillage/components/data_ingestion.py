@@ -1,4 +1,4 @@
-from src.PlantVillage.schemas import DataIngestionSchema 
+from PlantVillage.schemas import DataIngestionSchema 
 from ensure import ensure_annotations
 import os 
 import kagglehub 

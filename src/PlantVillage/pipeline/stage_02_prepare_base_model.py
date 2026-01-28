@@ -1,6 +1,6 @@
-from src.PlantVillage.config.configuration import ConfigurationManager
-from src.PlantVillage.components.prepare_base_model import PrepareBaseModel
-from src.PlantVillage import logger
+from PlantVillage.config.configuration import ConfigurationManager
+from PlantVillage.components.prepare_base_model import PrepareBaseModel
+from PlantVillage import logger
 
 
 STAGE_NAME = "Prepare Base Model"

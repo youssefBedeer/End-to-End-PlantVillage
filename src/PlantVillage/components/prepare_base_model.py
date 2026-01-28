@@ -1,4 +1,4 @@
-from src.PlantVillage.schemas import PrepareBaseModelSchema
+from PlantVillage.schemas import PrepareBaseModelSchema
 
 
 import tensorflow as tf

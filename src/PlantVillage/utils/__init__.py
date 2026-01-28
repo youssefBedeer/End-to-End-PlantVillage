@@ -3,7 +3,7 @@ from ensure import ensure_annotations
 import os 
 from box import ConfigBox 
 from pathlib import Path
-from src.PlantVillage import logger
+from PlantVillage import logger
 import json
 
 @ensure_annotations 
