@@ -11,3 +11,4 @@ kagglehub==0.4.1
 ensure==1.0.4
 PyYAML==6.0.3
 python-box==7.3.2
+-e .
