@@ -13,39 +13,37 @@ class DataIngestion:
     @ensure_annotations
     def download_data(self):
         try:
-            # download data from kagglehub
             data_url = self.config.source_url
+
+            # extract "user/dataset-name" if full URL is passed
             if "datasets" in data_url:
                 data_url = data_url.split("datasets/")[-1]
-                
-            # custom download path
-            os.environ["KAGGLEHUB_CACHE"] = self.config.local_path
-            # start download
-            path = kagglehub.dataset_download(data_url)
 
-            # KaggleHub may return either the dataset root or its parent.
-            # Prefer a nested "PlantVillage" directory if it exists, otherwise use the root path.
-            candidate_dir = os.path.join(path, "PlantVillage")
-            if os.path.isdir(candidate_dir):
-                src_path = candidate_dir
-            else:
-                src_path = path
-            
-            # copy downloaded content (file or directory) to destination
-            dest_path = self.config.local_path
-            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-            
-            if os.path.isdir(src_path):
-                # if a folder (e.g. PlantVillage images), copy the whole tree
-                if os.path.exists(dest_path):
-                    shutil.rmtree(dest_path)
-                shutil.copytree(src_path, dest_path)
-            else:
-                # if a single file (e.g. CSV), copy it
-                shutil.copy2(src_path, dest_path)
-            
-            # delete old folders and files (best-effort)
-            shutil.rmtree(Path("artifacts/data_ingestion/datasets"), ignore_errors=True)
+            # set kagglehub cache
+            os.environ["KAGGLEHUB_CACHE"] = self.config.local_path
+
+            # download dataset
+            path = Path(kagglehub.dataset_download(data_url))
+
+            # copy everything from downloaded folder into local_path
+            destination = Path(self.config.local_path)
+            destination.mkdir(parents=True, exist_ok=True)
+
+            for item in path.iterdir():
+                target = destination / item.name
+                if item.is_dir():
+                    shutil.copytree(item, target, dirs_exist_ok=True)
+                else:
+                    shutil.copy2(item, target)
+
+            # cleanup old datasets folder
+            old_path = Path("artifacts/data_ingestion/datasets")
+            if old_path.exists():
+                shutil.rmtree(old_path)
+
+            print(f"✅ Dataset downloaded and copied into: {destination}")
 
         except Exception as e:
-            raise ValueError(f"Data ingestion failed. Please ensure source_url is 'user/dataset-name'. ERROR: {e}")
+            raise ValueError(
+                f"Invalid URL: must be user/dataset-name (example: 'emmarex/plantdisease') ERROR: {e}"
+            )
