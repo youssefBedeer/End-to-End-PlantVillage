@@ -16,6 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up CML
+        uses: iterative/setup-cml@v2
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -25,7 +28,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install dvc cml
+          pip install dvc
 
       - name: Run training pipeline
         run: |
