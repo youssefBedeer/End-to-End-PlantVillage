@@ -4,6 +4,9 @@ import mlflow
 import dagshub
 from PlantVillage.schemas import EvaluationSchema
 from pathlib import Path
+import os 
+from dotenv import load_dotenv 
+load_dotenv()
 
 class Evaluation:
     def __init__(self, config: EvaluationSchema):
@@ -46,13 +49,22 @@ class Evaluation:
         
         
     def log_into_mlflow(self):
-        dagshub.init(repo_owner='youssefBedeer', repo_name='End-to-End-PlantVillage', mlflow=True)
+        token = os.getenv("DAGSHUB_TOKEN")
+        if not token:
+            raise ValueError("DAGSHUB_TOKEN is missing. Set it in .env or CI secrets.")
+
+
+        os.environ["DAGSHUB_USER_TOKEN"] = token
+
+
+        dagshub.init(
+        repo_owner=os.getenv("DAGSHUB_USER_NAME", "youssefBedeer"),
+        repo_name=os.getenv("DAGSHUB_REPO_NAME", "End-to-End-PlantVillage"),
+        mlflow=True
+        )
+
 
         with mlflow.start_run():
             mlflow.log_params(self.config.all_params)
-            mlflow.log_metrics(
-                {"loss": self.score[0], "accuracy": self.score[1]}
-            )
+            mlflow.log_metrics({"loss": self.score[0], "accuracy": self.score[1]})
             mlflow.keras.log_model(self.model, "model", registered_model_name="VGG16Model")
-            
-            

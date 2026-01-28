@@ -12,6 +12,7 @@ jobs:
     env:
       CML_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PYTHONPATH: ${{ github.workspace }}/src
+      DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
 
     steps:
       - name: Checkout repository

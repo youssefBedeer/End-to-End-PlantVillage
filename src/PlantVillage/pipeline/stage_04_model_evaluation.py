@@ -14,7 +14,13 @@ class ModelEvaluationPipeline:
         eval_config = config.get_evaluation_config()
         evaluation = Evaluation(eval_config)
         evaluation.evaluation()
-        evaluation.log_into_mlflow()
+        
+        # Attempt MLflow logging, but don't crash if remote tracking fails
+        mlflow_success = evaluation.log_into_mlflow()
+        if mlflow_success:
+            logger.info("Metrics successfully logged to MLflow")
+        else:
+            logger.warning("MLflow remote logging skipped, but local metrics saved")
     
 
 if __name__ == "__main__":
