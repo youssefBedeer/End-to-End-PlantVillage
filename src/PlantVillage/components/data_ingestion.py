@@ -22,8 +22,14 @@ class DataIngestion:
             os.environ["KAGGLEHUB_CACHE"] = self.config.local_path
             # start download
             path = kagglehub.dataset_download(data_url)
-            first_entry = os.listdir(path)[0]
-            src_path = os.path.join(path, first_entry)
+
+            # KaggleHub may return either the dataset root or its parent.
+            # Prefer a nested "PlantVillage" directory if it exists, otherwise use the root path.
+            candidate_dir = os.path.join(path, "PlantVillage")
+            if os.path.isdir(candidate_dir):
+                src_path = candidate_dir
+            else:
+                src_path = path
             
             # copy downloaded content (file or directory) to destination
             dest_path = self.config.local_path
